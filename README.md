@@ -378,6 +378,3 @@ CREATE TABLE games (
 
 
 
-- **GitHub**: https://github.com/AnshulMishra2003
-
-
