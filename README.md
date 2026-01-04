@@ -1,26 +1,95 @@
-# Connect4 Game - Full Stack Application
+# 🎮 4 in a Row (Connect4) – Full Stack Real-Time Game
 
-A real-time multiplayer Connect4 game built with React.js frontend and Node.js backend, featuring bot gameplay, live leaderboards, and modern UI design.
+A real-time multiplayer Connect4 game built with React.js frontend and Node.js backend, featuring competitive bot gameplay, live leaderboards, Kafka-based analytics, and modern UI design.
 
-## 🎮 Features
-
-- **Real-time Multiplayer**: Play against other players in real-time using Socket.IO
-- **Bot Gameplay**: Play against an intelligent bot when no human opponents are available
-- **Live Leaderboard**: Track top 5 players with real-time updates
-- **Modern UI**: Dark theme with responsive design and smooth animations
-- **Game Rules**: Built-in tutorial explaining how to win (4 in a row: horizontal, vertical, diagonal)
-- **Analytics**: Game events tracked via Kafka for performance monitoring (local development)
+✅ **All objectives and bonus requirements are implemented.**
 
 ## 🚀 Live Demo
 
- 🌐 **Frontend URL**: [https://4in-row-game-or-connect4.vercel.app/](https://4in-row-game-or-connect4.vercel.app/)
- 🌐 **Backend API**: [https://connect4-backend-ka4c.onrender.com](https://connect4-backend-ka4c.onrender.com)
+🌐 **Frontend**: [https://22-bce-10080-assignment-finr.vercel.app/](https://22-bce-10080-assignment-finr.vercel.app/)  
+🌐 **Backend API**: [https://two2bce10080-assignment-finr.onrender.com/](https://two2bce10080-assignment-finr.onrender.com/)
+
+## 🧠 Objective
+
+The goal of this assignment is to build a backend-driven real-time game server for 4 in a Row (Connect Four) with:
+
+- **1v1 real-time multiplayer gameplay**
+- **Competitive bot fallback**
+- **Game state handling and persistence**
+- **Leaderboard tracking**
+- **Kafka-based analytics**
+- **Simple frontend for interaction**
+
+## 🕹 Game Rules – 4 in a Row
+
+- The game is played on a **7×6 grid**
+- Players take turns dropping discs into columns
+- The disc falls to the lowest available slot
+- The first player to connect **4 discs** wins:
+  - **Horizontally**
+  - **Vertically**
+  - **Diagonally**
+- If the board fills with no winner → **Draw**
+
+## 🎯 Features Implemented (Assignment Mapping)
+
+### 1️⃣ Player Matchmaking
+- Players enter a username and join the game queue
+- If no opponent joins within **10 seconds**, a competitive bot is assigned automatically
+
+### 2️⃣ Competitive Bot (Non-Random)
+The bot:
+- Analyzes the board before each move
+- Prioritizes:
+  - **Blocking the player's immediate win**
+  - **Creating its own winning opportunities**
+- Plays valid, strategic moves
+- ❌ **No random moves**
+
+### 3️⃣ Real-Time Gameplay (WebSockets)
+- Built using **Socket.IO**
+- Instant move synchronization for both players
+- Turn-based validation
+- Real-time game state updates
+
+### 🔄 Reconnection Handling
+- If a player disconnects, they can rejoin the same game within **30 seconds**
+- If they fail to reconnect:
+  - The game is forfeited
+  - Opponent (or bot) is declared the winner
+
+### 4️⃣ Game State Management
+- **In-memory state** for active games (fast gameplay)
+- **PostgreSQL persistence** for completed games
+- Game data stored:
+  - Players
+  - Winner
+  - Draw state
+  - Timestamp
+
+### 5️⃣ 🏅 Leaderboard
+- Tracks **number of games won** per player
+- Displays **Top 5 players**
+- Updated in real-time after game completion
+
+### 🖥️ Frontend (Simple & Functional)
+Built with **React.js**, focusing on gameplay rather than styling.
+
+**Frontend Capabilities:**
+- Username entry
+- 7×6 grid game board
+- Click-to-drop disc interaction
+- Real-time opponent/bot moves
+- Win / Loss / Draw display
+- Live leaderboard
+
+💡 **Styling kept minimal to prioritize backend-driven functionality.**
 
 ## 📁 Project Structure
 
 ```
-connect4-game/
-├── connect4-backend/          # Node.js Backend
+4inRowGame/
+├── backend/                   # Node.js Backend
 │   ├── controllers/           # Game logic controllers
 │   ├── services/             # Game services
 │   ├── routes/               # API routes
@@ -29,7 +98,7 @@ connect4-game/
 │   ├── bot/                  # Bot logic
 │   ├── analytics/            # Analytics consumer
 │   └── utils/                # Utility functions
-├── connect4-frontend/         # React.js Frontend
+├── frontend/                  # React.js Frontend
 │   ├── src/
 │   │   ├── components/       # React components
 │   │   │   ├── Landing.jsx   # Home page
@@ -61,7 +130,7 @@ connect4-game/
 
 ## 📋 Prerequisites
 
-Before running this application, make sure you have:
+Before running this application locally, make sure you have:
 
 - **Node.js** (v14 or higher)
 - **npm** or **yarn**
@@ -73,14 +142,14 @@ Before running this application, make sure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/AnshulMishra2003/4inRowGame-or-Connect4.git
-cd connect4-game
+git clone https://github.com/student-singh/22BCE10080_assignment_finrgame.git
+cd 4inRowGame
 ```
 
 ### 2. Backend Setup
 
 ```bash
-cd connect4-backend
+cd backend
 
 # Install dependencies
 npm install
@@ -120,13 +189,13 @@ The backend will run on `http://localhost:5000`
 ### 3. Frontend Setup
 
 ```bash
-cd ../connect4-frontend
+cd ../frontend
 
 # Install dependencies
 npm install
 
 # Update socket connection in src/socket.js if needed
-# const socket = io("https://connect4-backend-ka4c.onrender.com");
+# const socket = io("https://two2bce10080-assignment-finr.onrender.com");
 
 # Start the frontend development server
 npm start
@@ -152,6 +221,8 @@ The frontend will run on `http://localhost:3000`
 
 ### Bot Intelligence
 - Smart bot that analyzes board state
+- **Non-random strategic moves**
+- Blocks player wins and creates winning opportunities
 - Fallback opponent when no human players available
 - Challenging gameplay experience
 
@@ -163,7 +234,9 @@ The frontend will run on `http://localhost:3000`
 
 ## 🚀 Deployment
 
-### Backend Deployment (Render/Heroku)
+### Backend Deployment (Render)
+
+**Live Backend**: [https://two2bce10080-assignment-finr.onrender.com/](https://two2bce10080-assignment-finr.onrender.com/)
 
 1. **Environment Variables**:
    ```
@@ -174,13 +247,16 @@ The frontend will run on `http://localhost:3000`
 2. **Build Command**: `npm install`
 3. **Start Command**: `npm start`
 
-### Frontend Deployment (Netlify/Vercel)
+### Frontend Deployment (Vercel)
 
-1. **Build Command**: `npm run build`
-2. **Publish Directory**: `build`
-3. **Environment Variables**: Update socket URL to your deployed backend
+**Live Frontend**: [https://22-bce-10080-assignment-finr.vercel.app/](https://22-bce-10080-assignment-finr.vercel.app/)
 
-## 🔄 Bonus – Kafka Integration for Analytics
+1. **Root Directory**: `frontend`
+2. **Build Command**: `npm run build`
+3. **Output Directory**: `build`
+4. **Environment Variables**: Update socket URL in `src/socket.js` to point to deployed backend
+
+## 💥 Kafka-Based Game Analytics
 
 Simulate a real-world production use case by implementing **decoupled game analytics** using **Kafka**.
 
@@ -227,7 +303,7 @@ bin/zookeeper-server-start.sh config/zookeeper.properties
 bin/kafka-server-start.sh config/server.properties
 
 # 2. Run the analytics consumer
-cd connect4-backend/analytics
+cd backend/analytics
 npm install
 npm start
 
@@ -262,7 +338,7 @@ CREATE TABLE games (
 
 ## 🔧 API Endpoints
 
-### Game Endpoints
+### REST API
 - `GET /leaderboard` - Get top 5 players
 
 ### Socket Events
@@ -271,6 +347,8 @@ CREATE TABLE games (
 - `gameStarted` - Game initialization
 - `moveMade` - Move broadcast
 - `gameOver` - Game completion
+- `playerDisconnected` - Player disconnect event
+- `playerReconnected` - Player reconnect event
 
 ## 🐛 Troubleshooting
 
@@ -298,14 +376,8 @@ CREATE TABLE games (
 4. Push to the branch: `git push origin feature/new-feature`
 5. Submit a pull request
 
-## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📞 Support
-
-For any questions or issues, please contact:
-- **Email**: anshul8032@gmail.com
 - **GitHub**: https://github.com/AnshulMishra2003
 
 
